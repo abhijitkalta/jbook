@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CodeEditor from "./code-editor";
 import Preview from "./preview";
 import bundler from "../bundler";
@@ -8,10 +8,15 @@ const CodeCell: React.FC = () => {
   const [input, setInput] = useState("");
   const [code, setCode] = useState("");
 
-  const handleClick = async () => {
-    const result = await bundler(input);
-    setCode(result);
-  };
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      const result = await bundler(input);
+      setCode(result);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [input]);
 
   return (
     <Resizable direction="vertical">
@@ -22,9 +27,6 @@ const CodeCell: React.FC = () => {
             onChange={(value) => setInput(value)}
           />
         </Resizable>
-        <div>
-          <button onClick={handleClick}>Submit</button>
-        </div>
         <Preview code={code} />
       </div>
     </Resizable>
