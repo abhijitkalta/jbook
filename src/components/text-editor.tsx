@@ -3,6 +3,7 @@ import MDEditor from "@uiw/react-md-editor";
 import { useState, useEffect, useRef } from "react";
 
 const TextEditor: React.FC = () => {
+  const [value, setValue] = useState("# Header");
   const [editing, setEditing] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -25,17 +26,24 @@ const TextEditor: React.FC = () => {
   if (editing) {
     return (
       <div ref={ref}>
-        <MDEditor className="text-editor" />
+        <MDEditor
+          className="text-editor"
+          value={value}
+          onChange={(v) => setValue(v || "")}
+        />
       </div>
     );
   }
   return (
     <div
+      className="text-editor card"
       onClick={() => {
         setEditing(true);
       }}
     >
-      <MDEditor.Markdown className="text-editor" source={"# Header"} />
+      <div className="card-content">
+        <MDEditor.Markdown source={value} />
+      </div>
     </div>
   );
 };
