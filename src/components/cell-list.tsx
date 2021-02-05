@@ -15,7 +15,7 @@ const CellList: React.FC = () => {
     </Fragment>
   ));
   return (
-    <div>
+    <div className="cell-list">
       {renderedCells}
       <AddCell
         forceVisible={cells.length === 0 ? true : false}
